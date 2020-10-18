@@ -2,77 +2,63 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-x = np.array([[1.0000,  1.7400,  5.3000, 10.8000],
-              [1.0000,  6.3200,  5.4200,  9.4000],
-              [1.0000,  6.2200,  8.4100,  7.2000],
-              [1.0000, 10.5200,  4.6300,  8.5000],
-              [1.0000,  1.1900, 11.6000,  9.4000],
-              [1.0000,  1.2200,  5.8500,  9.9000],
-              [1.0000,  4.1000,  6.6200,  8.0000],
-              [1.0000,  6.3200,  8.7200,  9.1000],
-              [1.0000,  4.0800,  4.4200,  8.7000],
-              [1.0000,  4.1500,  7.6000,  9.2000],
-              [1.0000, 10.1500,  4.8300,  9.4000],
-              [1.0000,  1.7200,  3.1200,  7.6000],
-              [1.0000,  1.7000,  5.3000,  8.2000]])
+x = np.array([[1,5,118],
+              [1,13,132],
+              [1,20,119],
+              [1,28,153],
+              [1,41,91],
+              [1,49,118],
+              [1,61,132],
+              [1,62,105]])
 
-y = np.array([[25.500], 
-              [31.200], 
-              [25.900], 
-              [38.400], 
-              [18.400], 
-              [26.700], 
-              [26.400], 
-              [25.900], 
-              [32.000], 
-              [25.200], 
-              [39.700], 
-              [35.700], 
-              [26.500]])
+y = np.array([[8.1],
+              [6.8],
+              [7.0],
+              [7.4],
+              [7.7],
+              [7.5],
+              [7.6],
+              [8.0]])
 
-
+# regressão //
 #print(x)
-xtran = np.transpose(x)
+xtran = np.transpose(x) #Matriz Transposta xT OU x'
 #print(xtran)
 
-xtran_x_x = np.mat(xtran) * np.mat(x)
+xtran_x_x = np.mat(xtran) * np.mat(x) # Multiplicação Matricial xT*x ou x'*x
 #print(xtran_x_x)
 
-xinv = np.linalg.inv(xtran_x_x)
+xinv = np.linalg.inv(xtran_x_x) # Inversão Matricial (xTx)^-1 ou (x'*x)^-1
 #print(xinv)
 
-xtran_x_y = np.mat(xtran) * np.mat(y)
+xtran_x_y = np.mat(xtran) * np.mat(y) # Multiplicação para obter xTy ou x'*y
 #print(xtran_x_y)
 
-beta = np.mat(xinv) * np.mat(xtran_x_y)
+beta = np.mat(xinv) * np.mat(xtran_x_y) # Multiplicação de (XTX)-1(XTy) ou (x'*x)-1*(x'y) para obter os betas
 #print(beta)
 
-ytran = np.transpose(y)
-#print(ytran)
+# regressão //
 
-
-y_hat = np.dot(x,beta)
-
-
+y_hat = np.dot(x,beta) # y chapeu ou com o carai do circunflexo em cima
 ##
 
-media_y = 0
+media_y = 0 # y com uma barra sla um demorgan em cima = sum(y)/n sendo n = numero de informações da amostra
 SQE = 0
 SQT = 0
 SQR = 0
 r2 = 0
-n = 13
-k = 4 # quantidade de variaveis explicativas ou xi
-
+k = aa # quantidade de variaveis explicativas ou numero de parâmetros
+n = aa # numero de informações da amostra, ou  dados contidos nas variaveis explicativas 
 r2_ajustado = 0
+
 for i in range(0,13):
-    SQE = SQE + ((y[i][0] - y_hat[i][0]) **2)
+    SQE = SQE + ((y[i][0] - y_hat[i][0]) **2) # SQE = SQT - SQR
     media_y = media_y + (y[i][0])
 
 
 for i in range(0,13):
-    SQT = SQT + ((y[i][0] - (media_y/13))**2)
-    SQR = SQR + ((y_hat[i][0] - (media_y/13))**2)
+    SQT = SQT + ((y[i][0] - (media_y/13))**2) # tambem pode ser escrito SQT = y'*y - n*(media_y/13))**2) OU tambem SQT = SQE + SQR
+    SQR = SQR + ((y_hat[i][0] - (media_y/13))**2) # SQR = (y_hat[i][0]**2) - n*(media_y/13))**2) OU beta'*x'*y - n*(media_y/13))**2)
 
 r2 = 1 - SQE / SQT
 r2_ajustado = 1 - ((n - 1)/ (n-(k+1)))*(1-r2)
@@ -84,7 +70,7 @@ print("R² ", np.float(r2))
 print("R² Ajustado ", np.float(r2_ajustado))
 
 
-#CASO O SENHOR QUEIRA PLOTAR O GRAFICO. NÃO SEI SE FICOU CERTO, FIZ ELE EM 2D E 3D
+#PLOTAR O GRAFICO, EM 2D E 3D
 #for i in range(0,4):
 #    plt.scatter(x[:,i],y)
 #
